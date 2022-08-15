@@ -4,12 +4,12 @@ const {
         DELETED,
     },
 } = require('../config');
-const { User } = require('../models');
+const { userService } = require('../services');
 
 module.exports = {
     getUsers: async (req, res, next) => {
         try {
-            const users = await User.find();
+            const users = await userService.getAll();
 
             res.json(users);
         } catch (e) {
@@ -19,7 +19,7 @@ module.exports = {
 
     createUser: async (req, res, next) => {
         try {
-            const createdUser = await User.create(req.body);
+            const createdUser = await userService.create(req.body);
 
             res.status(CREATED_OR_UPDATE).json(createdUser);
         } catch (e) {
@@ -30,7 +30,7 @@ module.exports = {
     updateUser: async (req, res, next) => {
         try {
             const { userId } = req.params;
-            const updatedUser = await User.findByIdAndUpdate(userId, req.body);
+            const updatedUser = await userService.update(userId, req.body);
 
             res.json(updatedUser);
         } catch (e) {
@@ -42,7 +42,7 @@ module.exports = {
         try {
             const { userId } = req.params;
 
-            await User.findByIdAndDelete(userId);
+            await userService.delete(userId);
 
             res.sendStatus(DELETED);
         } catch (e) {
