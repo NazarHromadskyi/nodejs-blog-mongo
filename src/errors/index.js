@@ -1,2 +1,4 @@
-export * from './ErrorHandler.js';
-export * from './handling.js';
+module.exports = {
+    errorHandler: require('./ErrorHandler'),
+    handling: require('./handling'),
+};

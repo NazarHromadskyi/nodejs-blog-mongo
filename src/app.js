@@ -1,17 +1,23 @@
-import express from 'express';
-import dotenv from 'dotenv';
+require('dotenv').config();
 
-import { variables } from './config/index.js';
-import { connection } from './database/index.js';
-import { errorHandler, notFoundError } from './errors/index.js';
+const express = require('express');
 
-dotenv.config();
+const {
+    handling: {
+        errorHandler,
+        notFoundError,
+    },
+} = require('./errors');
+const { variables } = require('./config');
+const { connection } = require('./database');
+const { userRouter } = require('./routes');
 
 const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.use('/users', userRouter);
 app.use('*', notFoundError);
 app.use(errorHandler);
 
@@ -19,7 +25,7 @@ startApp();
 
 async function startApp() {
     try {
-        await connection();
+        await connection.connectDb();
 
         app.listen(variables.PORT, () => {
             console.log(`App listen port: ${variables.PORT}`);

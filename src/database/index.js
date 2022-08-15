@@ -1,1 +1,3 @@
-export * from './connection.js';
+module.exports = {
+    connection: require('./connection'),
+};

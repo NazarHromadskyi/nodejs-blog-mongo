@@ -1,4 +1,4 @@
-export const statusCodes = {
+module.exports = {
     CREATED_OR_UPDATE: 201,
     DELETED: 204,
     BAD_REQUEST: 400,

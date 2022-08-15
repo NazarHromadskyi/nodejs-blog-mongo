@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "src/app.js",
-  "type": "module",
+  "type": "commonjs",
   "scripts": {
     "lint": "eslint --cache --ext .js,.ts src",
     "lint:fix": "npm run lint -- --fix",

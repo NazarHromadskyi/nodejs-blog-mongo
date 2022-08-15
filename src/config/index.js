@@ -1,2 +1,4 @@
-export * from './statusCodes.js';
-export * from './variables.js';
+module.exports = {
+    statusCodes: require('./statusCodes'),
+    variables: require('./variables'),
+};
