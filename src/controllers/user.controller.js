@@ -5,13 +5,15 @@ const {
     },
 } = require('../config');
 const { userService } = require('../services');
+const { objectNormalizer: { normalize } } = require('../utils');
 
 module.exports = {
     getUsers: async (req, res, next) => {
         try {
             const users = await userService.getAll();
+            const normalizedUsers = users.map((user) => normalize(user));
 
-            res.json(users);
+            res.json(normalizedUsers);
         } catch (e) {
             next(e);
         }
@@ -20,8 +22,9 @@ module.exports = {
     createUser: async (req, res, next) => {
         try {
             const createdUser = await userService.create(req.body);
+            const normalizedUser = normalize(createdUser);
 
-            res.status(CREATED_OR_UPDATE).json(createdUser);
+            res.status(CREATED_OR_UPDATE).json(normalizedUser);
         } catch (e) {
             next(e);
         }
@@ -31,8 +34,9 @@ module.exports = {
         try {
             const { userId } = req.params;
             const updatedUser = await userService.update(userId, req.body);
+            const normalizedUser = normalize(updatedUser);
 
-            res.json(updatedUser);
+            res.json(normalizedUser);
         } catch (e) {
             next(e);
         }
