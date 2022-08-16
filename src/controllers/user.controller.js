@@ -4,7 +4,7 @@ const {
         DELETED,
     },
 } = require('../config');
-const { userService } = require('../services');
+const { passwordService, userService } = require('../services');
 const { objectNormalizer: { normalize } } = require('../utils');
 
 module.exports = {
@@ -32,7 +32,10 @@ module.exports = {
 
     createUser: async (req, res, next) => {
         try {
-            const createdUser = await userService.create(req.body);
+            const { password } = req.body;
+            const hashedPassword = await passwordService.hash(password);
+
+            const createdUser = await userService.create({ ...req.body, password: hashedPassword });
             const normalizedUser = normalize(createdUser);
 
             res.status(CREATED).json(normalizedUser);

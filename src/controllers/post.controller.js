@@ -28,11 +28,13 @@ module.exports = {
         try {
             const { user } = req.body;
             const createdPost = await postService.create(req.body);
+
             await userService.update(user, {
                 $push: {
                     posts: createdPost._id,
                 },
             });
+
             const normalizedPost = normalize(createdPost);
 
             res.status(CREATED).json(normalizedPost);
@@ -55,8 +57,8 @@ module.exports = {
 
     deletePost: async (req, res, next) => {
         try {
-            // const { postId } = req.params;
             const { entity } = req;
+
             await postService.delete(entity._id);
             await userService.update(entity.user, {
                 $pull: {
