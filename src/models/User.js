@@ -15,7 +15,10 @@ const userSchema = new Schema({
         trim: true,
     },
 
-    age: Number,
+    age: {
+        type: Number,
+        default: null,
+    },
 
     email: {
         type: String,
@@ -33,18 +36,25 @@ const userSchema = new Schema({
     avatarUrl: {
         type: String,
         trim: true,
+        default: null,
     },
 
     posts: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        required: true,
-        default: [],
+        type: Schema.Types.ObjectId,
+        ref: 'Post',
     }],
 }, {
     timestamps: true,
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
+});
+
+userSchema.pre('find', function () {
+    this.populate('posts', '-__v -user');
+});
+
+userSchema.pre('findOne', function () {
+    this.populate('posts', '-__v -user');
 });
 
 module.exports = model('User', userSchema);

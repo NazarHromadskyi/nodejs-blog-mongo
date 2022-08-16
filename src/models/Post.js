@@ -20,15 +20,19 @@ const postSchema = new Schema({
         default: [],
     },
 
-    viewsCount: Number,
+    viewsCount: {
+        type: Number,
+        default: 0,
+    },
 
     imageUrl: {
         type: String,
+        default: null,
         trim: true,
     },
 
     user: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: 'User',
         required: true,
         default: null,
@@ -37,6 +41,14 @@ const postSchema = new Schema({
     timestamps: true,
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
+});
+
+postSchema.pre('find', function () {
+    this.populate('user', '-posts -password -__v');
+});
+
+postSchema.pre('findOne', function () {
+    this.populate('user', '-posts -password -__v');
 });
 
 module.exports = model('Post', postSchema);

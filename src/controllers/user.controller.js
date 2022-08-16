@@ -1,6 +1,6 @@
 const {
     statusCodes: {
-        CREATED_OR_UPDATE,
+        CREATED,
         DELETED,
     },
 } = require('../config');
@@ -19,12 +19,23 @@ module.exports = {
         }
     },
 
+    getUserById: async (req, res, next) => {
+        try {
+            const { entity } = req;
+            const normalizedUser = normalize(entity);
+
+            res.json(normalizedUser);
+        } catch (e) {
+            next(e);
+        }
+    },
+
     createUser: async (req, res, next) => {
         try {
             const createdUser = await userService.create(req.body);
             const normalizedUser = normalize(createdUser);
 
-            res.status(CREATED_OR_UPDATE).json(normalizedUser);
+            res.status(CREATED).json(normalizedUser);
         } catch (e) {
             next(e);
         }
@@ -45,7 +56,6 @@ module.exports = {
     deleteUser: async (req, res, next) => {
         try {
             const { userId } = req.params;
-
             await userService.delete(userId);
 
             res.sendStatus(DELETED);
