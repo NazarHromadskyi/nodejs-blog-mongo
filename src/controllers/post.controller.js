@@ -55,8 +55,14 @@ module.exports = {
 
     deletePost: async (req, res, next) => {
         try {
-            const { postId } = req.params;
-            await postService.delete(postId);
+            // const { postId } = req.params;
+            const { entity } = req;
+            await postService.delete(entity._id);
+            await userService.update(entity.user, {
+                $pull: {
+                    posts: entity._id,
+                },
+            });
 
             res.json();
         } catch (e) {
