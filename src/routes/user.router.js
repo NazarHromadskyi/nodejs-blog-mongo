@@ -21,6 +21,7 @@ const {
         validateByParam,
     },
     userMdlwr: {
+        isActionOnHimself,
         isEmailUnique,
     },
 } = require('../middlewares');
@@ -49,7 +50,9 @@ router.get(
 router.patch(
     '/:userId',
     validateByParam(updateUser),
+    validateToken(tokenTypes.ACCESS),
     getEntityByParams(User, USER_ID, PARAMS, _ID),
+    isActionOnHimself,
     isEntityPresent,
     userController.updateUser,
 );
@@ -57,6 +60,7 @@ router.delete(
     '/:userId',
     validateToken(tokenTypes.ACCESS),
     getEntityByParams(User, USER_ID, PARAMS, _ID),
+    isActionOnHimself,
     isEntityPresent,
     userController.deleteUser,
 );
