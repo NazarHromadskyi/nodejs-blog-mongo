@@ -2,13 +2,13 @@ require('dotenv').config();
 
 const express = require('express');
 
+const { variables } = require('./config');
 const {
     handlers: {
         errorHandler,
         notFoundHandler,
     },
 } = require('./errors');
-const { variables } = require('./config');
 const { connection } = require('./database');
 const {
     authRouter,
