@@ -1,18 +1,19 @@
 const { statusCodes: { BAD_REQUEST } } = require('../config');
-const { ErrorHandler } = require('../errors');
+const { ApiError } = require('../errors');
 const { NOT_FOUND } = require('../config/statusCodes');
 
 module.exports = {
     getEntityByParams: (
         Model,
         paramName,
-        searchIn,
+        searchIn = 'body',
         dbField = paramName,
     ) => async (req, res, next) => {
         try {
             const value = req[searchIn][paramName];
 
             req.entity = await Model.findOne({ [dbField]: value });
+
             next();
         } catch (e) {
             next(e);
@@ -24,7 +25,7 @@ module.exports = {
             const { entity } = req;
 
             if (!entity) {
-                throw new ErrorHandler(NOT_FOUND, 'Entity not found');
+                throw new ApiError(NOT_FOUND, 'Entity not found');
             }
 
             next();
@@ -38,7 +39,7 @@ module.exports = {
             const { error } = validator.validate(req[searchIn]);
 
             if (error) {
-                throw new ErrorHandler(BAD_REQUEST, error.details[0].message);
+                throw new ApiError(BAD_REQUEST, error.details[0].message);
             }
 
             next();

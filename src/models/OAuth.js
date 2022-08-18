@@ -1,12 +1,12 @@
 const { Schema, model } = require('mongoose');
 
 const OAuthSchema = new Schema({
-    access_token: {
+    accessToken: {
         type: String,
         required: true,
     },
 
-    refresh_token: {
+    refreshToken: {
         type: String,
         required: true,
     },

@@ -58,8 +58,8 @@ const updateUser = Joi.object({
 });
 
 const login = Joi.object({
-    name: Joi.string().alphanum().min(2).max(30),
     email: emailSchema,
+    password: passwordSchema,
 });
 
 const email = Joi.object({

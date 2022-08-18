@@ -1,5 +1,5 @@
 const { statusCodes: { BAD_REQUEST } } = require('../config');
-const { ErrorHandler } = require('../errors');
+const { ApiError } = require('../errors');
 const { User } = require('../models');
 
 module.exports = {
@@ -10,7 +10,7 @@ module.exports = {
             const userFromDb = await User.findOne({ email });
 
             if (userFromDb) {
-                throw new ErrorHandler(BAD_REQUEST, `Email: ${email} is already exist`);
+                throw new ApiError(BAD_REQUEST, `Email: ${email} is already exist`);
             }
 
             next();
