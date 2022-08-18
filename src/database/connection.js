@@ -1,10 +1,13 @@
 const mongoose = require('mongoose');
 
 const {
+    statusCodes,
     variables: {
-        DATABASE_NAME, MONGO_CONNECTION,
+        DATABASE_NAME,
+        MONGO_CONNECTION,
     },
 } = require('../config');
+const { ApiError } = require('../errors');
 
 module.exports = {
     connectDb: async () => {
@@ -12,7 +15,7 @@ module.exports = {
             await mongoose.connect(`${MONGO_CONNECTION}${DATABASE_NAME}`);
             console.log('Database connected');
         } catch (e) {
-            console.log(e);
+            throw new ApiError(statusCodes.SERVER_ERROR, e.message);
         }
     },
 };
