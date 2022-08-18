@@ -8,9 +8,13 @@ const {
         PARAMS,
         USER_ID,
     },
+    tokenTypes,
 } = require('../config');
 const { userController } = require('../controllers');
 const {
+    authMdlwr: {
+        validateToken,
+    },
     commonMdlwr: {
         getEntityByParams,
         isEntityPresent,
@@ -51,6 +55,7 @@ router.patch(
 );
 router.delete(
     '/:userId',
+    validateToken(tokenTypes.ACCESS),
     getEntityByParams(User, USER_ID, PARAMS, _ID),
     isEntityPresent,
     userController.deleteUser,

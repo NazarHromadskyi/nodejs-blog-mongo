@@ -6,21 +6,23 @@ const { ApiError } = require('../errors');
 const { authService, jwtService } = require('../services');
 
 module.exports = {
-    validateAccessToken: async (req, res, next) => {
+    validateToken: (tokenType) => async (req, res, next) => {
         try {
-            const accessToken = req.get(AUTHORIZATION);
+            const token = req.get(AUTHORIZATION);
 
-            if (!accessToken) {
-                throw new ApiError(UNAUTHORIZED, 'Invalid token');
+            if (!token) {
+                throw new ApiError(UNAUTHORIZED, `${tokenType} token missed`);
             }
 
-            await jwtService.verifyToken(accessToken);
+            await jwtService.verifyToken(token, tokenType);
 
-            const tokenFromDB = await authService.findToken(accessToken);
+            const tokenFromDB = await authService.findToken(token, tokenType);
 
             if (!tokenFromDB) {
                 throw new ApiError(UNAUTHORIZED, 'Invalid token');
             }
+
+            req.authorizedUser = tokenFromDB.user;
 
             next();
         } catch (e) {

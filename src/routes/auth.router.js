@@ -1,10 +1,10 @@
 const router = require('express').Router();
 
-const { searchParams } = require('../config');
+const { searchParams, tokenTypes } = require('../config');
 const { authController } = require('../controllers');
 const {
     authMdlwr: {
-        validateAccessToken,
+        validateToken,
     },
     commonMdlwr: {
         getEntityByParams,
@@ -25,8 +25,14 @@ router.post(
 
 router.post(
     '/logout',
-    validateAccessToken,
+    validateToken(tokenTypes.ACCESS),
     authController.logout,
+);
+
+router.post(
+    '/refresh',
+    validateToken(tokenTypes.REFRESH),
+    authController.refresh,
 );
 
 module.exports = router;

@@ -1,6 +1,7 @@
 const {
     constants: { AUTHORIZATION },
     statusCodes: { CREATED, DELETED },
+    tokenTypes: { ACCESS, REFRESH },
 } = require('../config');
 const {
     authService,
@@ -16,7 +17,7 @@ module.exports = {
 
             await passwordService.compare(entity.password, password);
 
-            const tokenPair = jwtService.generateTokenPair({ email });
+            const tokenPair = jwtService.generateTokenPair(email);
 
             await authService.writeTokenPair(tokenPair, entity._id);
 
@@ -33,9 +34,29 @@ module.exports = {
         try {
             const accessToken = req.get(AUTHORIZATION);
 
-            await authService.deleteAccessToken(accessToken);
+            await authService.deleteToken(accessToken, ACCESS);
 
             res.sendStatus(DELETED);
+        } catch (e) {
+            next(e);
+        }
+    },
+
+    refresh: async (req, res, next) => {
+        try {
+            const refreshToken = req.get(AUTHORIZATION);
+            const user = req.authorizedUser;
+
+            await authService.deleteToken(refreshToken, REFRESH);
+
+            const tokenPair = jwtService.generateTokenPair(user.email);
+
+            await authService.writeTokenPair(tokenPair, user._id);
+
+            res.status(CREATED).json({
+                ...tokenPair,
+                user: objectNormalizer.normalize(user),
+            });
         } catch (e) {
             next(e);
         }

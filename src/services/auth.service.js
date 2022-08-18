@@ -1,19 +1,17 @@
-const {
-    databaseFields: {
-        ACCESS_TOKEN,
-        REFRESH_TOKEN,
-    },
-    tokenTypes: {
-        ACCESS,
-    },
-} = require('../config');
 const { OAuth } = require('../models');
+const { getFieldName: { tokenFieldName } } = require('../utils');
 
 module.exports = {
     writeTokenPair: async (tokenPair, userId) => OAuth.create({ ...tokenPair, user: userId }),
-    deleteAccessToken: async (accessToken) => OAuth.deleteOne({ accessToken }),
-    findToken: async (token, tokenType = ACCESS) => {
-        const fieldName = tokenType === ACCESS ? ACCESS_TOKEN : REFRESH_TOKEN;
+
+    deleteToken: async (token, tokenType) => {
+        const fieldName = tokenFieldName(tokenType);
+
+        return OAuth.deleteOne({ [fieldName]: token });
+    },
+
+    findToken: async (token, tokenType) => {
+        const fieldName = tokenFieldName(tokenType);
 
         return OAuth.findOne({ [fieldName]: token });
     },
