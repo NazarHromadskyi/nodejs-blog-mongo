@@ -1,4 +1,7 @@
-const { statusCodes: { BAD_REQUEST } } = require('../config');
+const {
+    searchParams,
+    statusCodes: { BAD_REQUEST },
+} = require('../config');
 const { ApiError } = require('../errors');
 const { NOT_FOUND } = require('../config/statusCodes');
 
@@ -6,7 +9,7 @@ module.exports = {
     getEntityByParams: (
         Model,
         paramName,
-        searchIn = 'body',
+        searchIn = searchParams.BODY,
         dbField = paramName,
     ) => async (req, res, next) => {
         try {
@@ -34,7 +37,10 @@ module.exports = {
         }
     },
 
-    validateByParam: (validator, searchIn = 'body') => (req, res, next) => {
+    validateByParam: (
+        validator,
+        searchIn = searchParams.BODY,
+    ) => (req, res, next) => {
         try {
             const { error } = validator.validate(req[searchIn]);
 

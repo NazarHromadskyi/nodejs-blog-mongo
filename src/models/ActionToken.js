@@ -1,5 +1,12 @@
 const { Schema, model } = require('mongoose');
 
+const {
+    modelNames: {
+        ACTION_TOKEN,
+        USER,
+    },
+} = require('../config');
+
 const ActionTokenSchema = new Schema({
     token: {
         type: String,
@@ -9,7 +16,7 @@ const ActionTokenSchema = new Schema({
     user: {
         type: Schema.Types.ObjectId,
         required: true,
-        ref: 'User',
+        ref: USER,
     },
 }, {
     timestamps: true,
@@ -21,4 +28,4 @@ ActionTokenSchema.pre('findOne', function () {
     this.populate('user');
 });
 
-module.exports = model('token', ActionTokenSchema);
+module.exports = model(ACTION_TOKEN, ActionTokenSchema);

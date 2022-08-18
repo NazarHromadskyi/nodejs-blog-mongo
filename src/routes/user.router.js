@@ -1,5 +1,14 @@
 const router = require('express').Router();
 
+const {
+    databaseFields: {
+        _ID,
+    },
+    searchParams: {
+        PARAMS,
+        USER_ID,
+    },
+} = require('../config');
 const { userController } = require('../controllers');
 const {
     commonMdlwr: {
@@ -29,20 +38,20 @@ router.post(
 
 router.get(
     '/:userId',
-    getEntityByParams(User, 'userId', 'params', '_id'),
+    getEntityByParams(User, USER_ID, PARAMS, _ID),
     isEntityPresent,
     userController.getUserById,
 );
 router.patch(
     '/:userId',
     validateByParam(updateUser),
-    getEntityByParams(User, 'userId', 'params', '_id'),
+    getEntityByParams(User, USER_ID, PARAMS, _ID),
     isEntityPresent,
     userController.updateUser,
 );
 router.delete(
     '/:userId',
-    getEntityByParams(User, 'userId', 'params', '_id'),
+    getEntityByParams(User, USER_ID, PARAMS, _ID),
     isEntityPresent,
     userController.deleteUser,
 );

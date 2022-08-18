@@ -1,5 +1,14 @@
 const router = require('express').Router();
 
+const {
+    databaseFields: {
+        _ID,
+    },
+    searchParams: {
+        POST_ID,
+        PARAMS,
+    },
+} = require('../config');
 const { postController } = require('../controllers');
 const {
     commonMdlwr: {
@@ -24,19 +33,19 @@ router.post(
 
 router.get(
     '/:postId',
-    getEntityByParams(Post, 'postId', 'params', '_id'),
+    getEntityByParams(Post, POST_ID, PARAMS, _ID),
     isEntityPresent,
     postController.getPostById,
 );
 router.patch(
     '/:postId',
-    getEntityByParams(Post, 'postId', 'params', '_id'),
+    getEntityByParams(Post, POST_ID, PARAMS, _ID),
     isEntityPresent,
     postController.updatePost,
 );
 router.delete(
     '/:postId',
-    getEntityByParams(Post, 'postId', 'params', '_id'),
+    getEntityByParams(Post, POST_ID, PARAMS, _ID),
     isEntityPresent,
     postController.deletePost,
 );

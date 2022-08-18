@@ -1,6 +1,11 @@
-const mongoose = require('mongoose');
+const { Schema, model } = require('mongoose');
 
-const { Schema, model } = mongoose;
+const {
+    modelNames: {
+        POST,
+        USER,
+    },
+} = require('../config');
 
 const postSchema = new Schema({
     title: {
@@ -33,7 +38,7 @@ const postSchema = new Schema({
 
     user: {
         type: Schema.Types.ObjectId,
-        ref: 'User',
+        ref: USER,
         required: true,
         default: null,
     },
@@ -51,4 +56,4 @@ postSchema.pre('findOne', function () {
     this.populate('user', '-posts -password -__v');
 });
 
-module.exports = model('Post', postSchema);
+module.exports = model(POST, postSchema);

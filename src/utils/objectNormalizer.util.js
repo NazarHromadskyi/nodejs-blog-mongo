@@ -1,9 +1,15 @@
+const {
+    databaseFields: {
+        _ID, __V, PASSWORD,
+    },
+} = require('../config');
+
 module.exports = {
     normalize: (userToNormalize) => {
         const fieldsToRemove = [
-            'password',
-            '__v',
-            '_id',
+            PASSWORD,
+            __V,
+            _ID,
         ];
         const normalizedUser = userToNormalize.toJSON();
 

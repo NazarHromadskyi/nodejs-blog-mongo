@@ -1,7 +1,7 @@
 const { statusCodes } = require('../config');
 
 module.exports = {
-    notFoundError: (err, req, res, next) => {
+    notFoundHandler: (err, req, res, next) => {
         next({
             status: err.status || statusCodes.NOT_FOUND,
             message: err.message,

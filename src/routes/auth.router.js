@@ -1,5 +1,6 @@
 const router = require('express').Router();
 
+const { searchParams } = require('../config');
 const { authController } = require('../controllers');
 const {
     authMdlwr: {
@@ -17,7 +18,7 @@ const { userValidator } = require('../validators');
 router.post(
     '/',
     validateByParam(userValidator.login),
-    getEntityByParams(User, 'email'),
+    getEntityByParams(User, searchParams.EMAIL),
     isEntityPresent,
     authController.login,
 );

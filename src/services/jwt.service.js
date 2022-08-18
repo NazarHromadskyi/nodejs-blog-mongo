@@ -5,6 +5,7 @@ const {
     statusCodes: {
         UNAUTHORIZED,
     },
+    tokenTypes: { ACCESS },
     variables: {
         ACCESS_SECRET_KEY,
         REFRESH_SECRET_KEY,
@@ -25,9 +26,9 @@ module.exports = {
         };
     },
 
-    verifyToken: async (token, tokenType = 'access') => {
+    verifyToken: async (token, tokenType = ACCESS) => {
         try {
-            const secretKey = tokenType === 'access' ? ACCESS_SECRET_KEY : REFRESH_SECRET_KEY;
+            const secretKey = tokenType === ACCESS ? ACCESS_SECRET_KEY : REFRESH_SECRET_KEY;
 
             await verifyPromise(token, secretKey);
         } catch (e) {

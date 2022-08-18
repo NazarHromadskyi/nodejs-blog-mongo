@@ -3,9 +3,9 @@ require('dotenv').config();
 const express = require('express');
 
 const {
-    handling: {
+    handlers: {
         errorHandler,
-        notFoundError,
+        notFoundHandler,
     },
 } = require('./errors');
 const { variables } = require('./config');
@@ -25,7 +25,7 @@ app.use('/auth', authRouter);
 app.use('/posts', postRouter);
 app.use('/users', userRouter);
 
-app.use('*', notFoundError);
+app.use('*', notFoundHandler);
 app.use(errorHandler);
 
 startApp();
