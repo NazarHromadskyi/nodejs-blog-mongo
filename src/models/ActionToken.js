@@ -21,7 +21,6 @@ const ActionTokenSchema = new Schema({
 }, {
     timestamps: true,
     toObject: { virtuals: true },
-    toJSON: { virtuals: true },
 });
 
 ActionTokenSchema.pre('findOne', function () {

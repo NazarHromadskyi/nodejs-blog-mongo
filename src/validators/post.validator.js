@@ -40,7 +40,8 @@ const updatePost = Joi.object({
         .array(),
 
     viewsCount: Joi
-        .number(),
+        .number()
+        .min(0),
 });
 
 module.exports = {
