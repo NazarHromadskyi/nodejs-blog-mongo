@@ -31,6 +31,8 @@ router.post(
     postController.createPost,
 );
 
+router.get('/tags', postController.getTags);
+
 router.get(
     '/:postId',
     getEntityByParams(Post, POST_ID, PARAMS, _ID),

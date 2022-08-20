@@ -1,7 +1,13 @@
 const { Post } = require('../models');
 
 module.exports = {
-    getAll: () => Post.find(),
+    getAll: () => Post.find().sort({ createdAt: -1 }),
+
+    getTags: async () => {
+        const posts = await Post.find().limit(5);
+
+        return posts.map((post) => post.tags).flat().slice(0, 5);
+    },
 
     create: (post) => Post.create(post),
 

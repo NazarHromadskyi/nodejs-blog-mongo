@@ -24,6 +24,16 @@ module.exports = {
         }
     },
 
+    getTags: async (req, res, next) => {
+        try {
+            const tags = await postService.getTags();
+
+            res.json(tags);
+        } catch (e) {
+            next(e);
+        }
+    },
+
     createPost: async (req, res, next) => {
         try {
             const { user } = req.body;
