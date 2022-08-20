@@ -51,7 +51,7 @@ function configureCors(origin, callback) {
     const whiteList = variables.ALLOWED_ORIGINS.split(';');
 
     if (!whiteList.includes(origin)) {
-        return callback(new ApiError(statusCodes.FORBIDDEN, `${origin} not allowed by CORS`), false);
+        return callback(new ApiError(statusCodes.FORBIDDEN, `Origin '${origin}' not allowed by CORS`), false);
     }
 
     return callback(null, true);
