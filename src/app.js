@@ -47,7 +47,6 @@ async function startApp() {
 }
 
 function configureCors(origin, callback) {
-    console.log(origin);
     const whiteList = variables.ALLOWED_ORIGINS.split(';');
 
     if (!whiteList.includes(origin)) {
