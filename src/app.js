@@ -3,7 +3,11 @@ require('dotenv').config();
 const cors = require('cors');
 const express = require('express');
 
-const { statusCodes, variables } = require('./config');
+const {
+    constants,
+    statusCodes,
+    variables,
+} = require('./config');
 const {
     ApiError,
     handlers: {
@@ -49,8 +53,19 @@ async function startApp() {
 function configureCors(origin, callback) {
     const whiteList = variables.ALLOWED_ORIGINS.split(';');
 
+    if (!origin && process.env
+        .NODE_ENV === constants.DEV_ENVIRONMENT) {
+        return callback(null, true);
+    }
+
     if (!whiteList.includes(origin)) {
-        return callback(new ApiError(statusCodes.FORBIDDEN, `Origin '${origin}' not allowed by CORS`), false);
+        return callback(
+            new ApiError(
+                statusCodes.FORBIDDEN,
+                `Origin '${origin}' not allowed by CORS`,
+            ),
+            false,
+        );
     }
 
     return callback(null, true);
