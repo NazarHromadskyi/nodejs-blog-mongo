@@ -5,4 +5,6 @@ module.exports = {
 
     ACCESS_SECRET_KEY: process.env.ACCESS_SECRET_KEY || 'access_secret_key',
     REFRESH_SECRET_KEY: process.env.REFRESH_SECRET_KEY || 'refresh_secret_key',
+
+    ALLOWED_ORIGINS: process.env.ALLOWED_ORIGINS || 'http://localhost:3000;http://localhost:4200',
 };

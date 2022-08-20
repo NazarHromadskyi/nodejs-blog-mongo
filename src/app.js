@@ -1,9 +1,11 @@
 require('dotenv').config();
 
+const cors = require('cors');
 const express = require('express');
 
-const { variables } = require('./config');
+const { statusCodes, variables } = require('./config');
 const {
+    ApiError,
     handlers: {
         errorHandler,
         notFoundHandler,
@@ -17,6 +19,8 @@ const {
 } = require('./routes');
 
 const app = express();
+
+app.use(cors({ origin: configureCors }));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -40,4 +44,15 @@ async function startApp() {
     } catch (e) {
         console.log(e);
     }
+}
+
+function configureCors(origin, callback) {
+    console.log(origin);
+    const whiteList = variables.ALLOWED_ORIGINS.split(';');
+
+    if (!whiteList.includes(origin)) {
+        return callback(new ApiError(statusCodes.FORBIDDEN, `${origin} not allowed by CORS`), false);
+    }
+
+    return callback(null, true);
 }
