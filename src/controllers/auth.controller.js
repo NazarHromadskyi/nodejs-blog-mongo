@@ -1,5 +1,5 @@
 const {
-    constants: { AUTHORIZATION },
+    constants: { AUTHORIZATION, TOKEN },
     statusCodes: { CREATED, DELETED },
     tokenTypes: { ACCESS, REFRESH },
 } = require('../config');
@@ -21,8 +21,14 @@ module.exports = {
 
             await authService.writeTokenPair(tokenPair, entity._id);
 
+            res.cookie(
+                TOKEN,
+                tokenPair.refreshToken,
+                { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 },
+            );
+
             res.status(CREATED).json({
-                ...tokenPair,
+                accessToken: tokenPair.accessToken,
                 user: objectNormalizer.normalize(entity),
             });
         } catch (e) {

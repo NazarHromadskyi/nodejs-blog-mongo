@@ -1,5 +1,6 @@
 require('dotenv').config();
 
+const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const express = require('express');
 
@@ -25,6 +26,7 @@ const {
 const app = express();
 
 app.use(cors({ origin: configureCors }));
+app.use(cookieParser(variables.COOKIE_SECRET_KEY));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
