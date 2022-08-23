@@ -1,14 +1,24 @@
 const {
-    constants: { AUTHORIZATION },
     statusCodes: { UNAUTHORIZED },
 } = require('../config');
 const { ApiError } = require('../errors');
-const { authService, jwtService } = require('../services');
+const {
+    authService,
+    jwtService,
+} = require('../services');
+const {
+    fieldsName: { ACCESS_TOKEN, REFRESH_TOKEN },
+    tokenTypes: { ACCESS },
+} = require('../config');
 
 module.exports = {
     validateToken: (tokenType) => async (req, res, next) => {
         try {
-            const token = req.get(AUTHORIZATION);
+            const token = tokenType === ACCESS
+                ? (
+                    req.cookies[ACCESS_TOKEN]
+                ) : (
+                    req.cookies[REFRESH_TOKEN]);
 
             if (!token) {
                 throw new ApiError(UNAUTHORIZED, `${tokenType} token missed`);
@@ -23,6 +33,7 @@ module.exports = {
             }
 
             req.authorizedUser = tokenFromDB.user;
+            req.normalizedToken = token;
 
             next();
         } catch (e) {

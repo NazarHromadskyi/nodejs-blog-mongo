@@ -29,7 +29,7 @@ router.post(
     authController.logout,
 );
 
-router.post(
+router.get(
     '/refresh',
     validateToken(tokenTypes.REFRESH),
     authController.refresh,

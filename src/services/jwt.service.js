@@ -17,8 +17,16 @@ const verifyPromise = util.promisify(jwt.verify);
 
 module.exports = {
     generateTokenPair: (payload) => {
-        const accessToken = jwt.sign({ payload }, ACCESS_SECRET_KEY, { expiresIn: '30m' });
-        const refreshToken = jwt.sign({ payload }, REFRESH_SECRET_KEY, { expiresIn: '31d' });
+        const accessToken = jwt.sign(
+            { payload },
+            ACCESS_SECRET_KEY,
+            { expiresIn: '15m' },
+        );
+        const refreshToken = jwt.sign(
+            { payload },
+            REFRESH_SECRET_KEY,
+            { expiresIn: '31d' },
+        );
 
         return {
             accessToken,
@@ -29,6 +37,8 @@ module.exports = {
     verifyToken: async (token, tokenType = ACCESS) => {
         try {
             const secretKey = tokenType === ACCESS ? ACCESS_SECRET_KEY : REFRESH_SECRET_KEY;
+
+            // console.log(`[${tokenType}, ${token}]`); // todo remove
 
             await verifyPromise(token, secretKey);
         } catch (e) {

@@ -7,4 +7,5 @@ module.exports = {
     REFRESH_SECRET_KEY: process.env.REFRESH_SECRET_KEY || 'refresh_secret_key',
 
     ALLOWED_ORIGINS: process.env.ALLOWED_ORIGINS || 'http://localhost:3000;http://localhost:4200',
+    COOKIE_SECRET_KEY: process.env.COOKIE_SECRET_KEY || 'cookie_secret_key',
 };

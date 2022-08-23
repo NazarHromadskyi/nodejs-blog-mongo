@@ -1,5 +1,5 @@
 const {
-    databaseFields: {
+    fieldsName: {
         ACCESS_TOKEN,
         REFRESH_TOKEN,
     },

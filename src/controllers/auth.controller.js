@@ -1,7 +1,16 @@
 const {
-    constants: { AUTHORIZATION, TOKEN },
-    statusCodes: { CREATED, DELETED },
-    tokenTypes: { ACCESS, REFRESH },
+    fieldsName: {
+        ACCESS_TOKEN,
+        REFRESH_TOKEN,
+    },
+    statusCodes: {
+        CREATED,
+        DELETED,
+    },
+    tokenTypes: {
+        ACCESS,
+        REFRESH,
+    },
 } = require('../config');
 const {
     authService,
@@ -10,39 +19,46 @@ const {
 } = require('../services');
 const { objectNormalizer } = require('../utils');
 
+const cookieOptions = {
+    httponly: true,
+    maxAge: 24 * 60 * 60 * 1000, // 24 hours
+};
+
 module.exports = {
     login: async (req, res, next) => {
         try {
-            const { entity, body: { email, password } } = req;
+            const {
+                entity,
+                body: {
+                    email,
+                    password,
+                },
+            } = req;
 
             await passwordService.compare(entity.password, password);
 
-            const tokenPair = jwtService.generateTokenPair(email);
+            const {
+                accessToken,
+                refreshToken,
+            } = jwtService.generateTokenPair(email);
 
-            await authService.writeTokenPair(tokenPair, entity._id);
+            await authService.writeTokenPair({
+                accessToken,
+                refreshToken,
+            }, entity._id);
 
-            res.cookie(
-                TOKEN,
-                tokenPair.refreshToken,
-                { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 },
-            );
-
-            res.status(CREATED).json({
-                accessToken: tokenPair.accessToken,
-                user: objectNormalizer.normalize(entity),
+            res.cookie(ACCESS_TOKEN, accessToken, cookieOptions);
+            res.cookie(REFRESH_TOKEN, refreshToken, cookieOptions);
+            res.cookie('loggedIn', true, {
+                ...cookieOptions,
+                httpOnly: false,
             });
-        } catch (e) {
-            next(e);
-        }
-    },
 
-    logout: async (req, res, next) => {
-        try {
-            const accessToken = req.get(AUTHORIZATION);
-
-            await authService.deleteToken(accessToken, ACCESS);
-
-            res.sendStatus(DELETED);
+            res.status(CREATED)
+                .json({
+                    accessToken,
+                    user: objectNormalizer.normalize(entity),
+                });
         } catch (e) {
             next(e);
         }
@@ -50,19 +66,43 @@ module.exports = {
 
     refresh: async (req, res, next) => {
         try {
-            const refreshToken = req.get(AUTHORIZATION);
+            const tokenFromCookie = req.cookies[REFRESH_TOKEN];
             const user = req.authorizedUser;
 
-            await authService.deleteToken(refreshToken, REFRESH);
+            await authService.deleteToken(tokenFromCookie, REFRESH);
 
-            const tokenPair = jwtService.generateTokenPair(user.email);
+            const { accessToken, refreshToken } = jwtService.generateTokenPair(user.email);
 
-            await authService.writeTokenPair(tokenPair, user._id);
+            await authService.writeTokenPair({ accessToken, refreshToken }, user._id);
 
-            res.status(CREATED).json({
-                ...tokenPair,
-                user: objectNormalizer.normalize(user),
+            res.cookie(ACCESS_TOKEN, accessToken, cookieOptions);
+            res.cookie(REFRESH_TOKEN, refreshToken, cookieOptions);
+            res.cookie('loggedIn', true, {
+                ...cookieOptions,
+                httpOnly: false,
             });
+
+            res.status(CREATED)
+                .json({
+                    accessToken,
+                    user: objectNormalizer.normalize(user),
+                });
+        } catch (e) {
+            next(e);
+        }
+    },
+
+    logout: async (req, res, next) => {
+        try {
+            const accessToken = req.normalizedToken;
+
+            await authService.deleteToken(accessToken, ACCESS);
+
+            res.cookie(ACCESS_TOKEN, '', { maxAge: 1 });
+            res.cookie(REFRESH_TOKEN, '', { maxAge: 1 });
+            res.cookie('loggedIn', '', { maxAge: 1 });
+
+            res.sendStatus(DELETED);
         } catch (e) {
             next(e);
         }
