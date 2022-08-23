@@ -2,6 +2,8 @@
 .env
 .eslintcache
 
+nodejs-blog-mongo.iml
+
 package-lock.json
 node_modules
 

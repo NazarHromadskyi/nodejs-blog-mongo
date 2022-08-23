@@ -1,6 +1,6 @@
 module.exports = {
     constants: require('./constants'),
-    databaseFields: require('./databaseFields'),
+    fieldsName: require('./fieldsName'),
     modelNames: require('./modelNames'),
     searchParams: require('./searchParams'),
     statusCodes: require('./statusCodes'),

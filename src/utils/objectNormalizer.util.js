@@ -1,5 +1,5 @@
 const {
-    databaseFields: {
+    fieldsName: {
         __V, PASSWORD,
     },
 } = require('../config');
