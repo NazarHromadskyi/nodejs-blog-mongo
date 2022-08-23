@@ -25,11 +25,16 @@ const {
 
 const app = express();
 
-app.use(cors({ origin: configureCors }));
 app.use(cookieParser(variables.COOKIE_SECRET_KEY));
+app.use(cors({ origin: configureCors, credentials: true }));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+if (process.env.NODE_ENV === constants.DEV_ENVIRONMENT) {
+    const morgan = require('morgan');
+    app.use(morgan('dev'));
+}
 
 app.use('/auth', authRouter);
 app.use('/posts', postRouter);
