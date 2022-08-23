@@ -1,7 +1,7 @@
 const router = require('express').Router();
 
 const {
-    databaseFields: {
+    fieldsName: {
         _ID,
     },
     searchParams: {
