@@ -2,6 +2,8 @@ const {
     fieldsName: {
         ACCESS_TOKEN,
         REFRESH_TOKEN,
+        IS_LOGGED_IN,
+        USER_ID,
     },
     statusCodes: {
         CREATED,
@@ -20,7 +22,7 @@ const {
 const { objectNormalizer } = require('../utils');
 
 const cookieOptions = {
-    httponly: true,
+    httpOnly: true,
     maxAge: 24 * 60 * 60 * 1000, // 24 hours
 };
 
@@ -49,7 +51,8 @@ module.exports = {
 
             res.cookie(ACCESS_TOKEN, accessToken, cookieOptions);
             res.cookie(REFRESH_TOKEN, refreshToken, cookieOptions);
-            res.cookie('loggedIn', true, {
+            res.cookie(USER_ID, entity._id.toString(), cookieOptions);
+            res.cookie(IS_LOGGED_IN, true, {
                 ...cookieOptions,
                 httpOnly: false,
             });
@@ -71,13 +74,20 @@ module.exports = {
 
             await authService.deleteToken(tokenFromCookie, REFRESH);
 
-            const { accessToken, refreshToken } = jwtService.generateTokenPair(user.email);
+            const {
+                accessToken,
+                refreshToken,
+            } = jwtService.generateTokenPair(user.email);
 
-            await authService.writeTokenPair({ accessToken, refreshToken }, user._id);
+            await authService.writeTokenPair({
+                accessToken,
+                refreshToken,
+            }, user._id);
 
             res.cookie(ACCESS_TOKEN, accessToken, cookieOptions);
             res.cookie(REFRESH_TOKEN, refreshToken, cookieOptions);
-            res.cookie('loggedIn', true, {
+            res.cookie(USER_ID, user._id.toString(), cookieOptions);
+            res.cookie(IS_LOGGED_IN, true, {
                 ...cookieOptions,
                 httpOnly: false,
             });
@@ -94,13 +104,14 @@ module.exports = {
 
     logout: async (req, res, next) => {
         try {
-            const accessToken = req.normalizedToken;
+            const accessToken = req.cookies[ACCESS_TOKEN];
 
             await authService.deleteToken(accessToken, ACCESS);
 
             res.cookie(ACCESS_TOKEN, '', { maxAge: 1 });
             res.cookie(REFRESH_TOKEN, '', { maxAge: 1 });
-            res.cookie('loggedIn', '', { maxAge: 1 });
+            res.cookie(IS_LOGGED_IN, '', { maxAge: 1 });
+            res.cookie(USER_ID, '', { maxAge: 1 });
 
             res.sendStatus(DELETED);
         } catch (e) {

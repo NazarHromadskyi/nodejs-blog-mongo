@@ -15,7 +15,7 @@ module.exports = {
             const userFromDb = await User.findOne({ email });
 
             if (userFromDb) {
-                throw new ApiError(BAD_REQUEST, `Email: ${email} is already exist`);
+                throw new ApiError(BAD_REQUEST, 'User already exist');
             }
 
             next();
