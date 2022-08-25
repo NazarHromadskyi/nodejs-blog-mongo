@@ -33,7 +33,6 @@ module.exports = {
             }
 
             req.authorizedUser = tokenFromDB.user;
-            req.normalizedToken = token;
 
             next();
         } catch (e) {
