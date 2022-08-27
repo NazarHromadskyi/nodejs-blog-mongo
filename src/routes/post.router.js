@@ -8,9 +8,15 @@ const {
         POST_ID,
         PARAMS,
     },
+    tokenTypes: {
+        ACCESS,
+    },
 } = require('../config');
 const { postController } = require('../controllers');
 const {
+    authMdlwr: {
+        validateToken,
+    },
     commonMdlwr: {
         getEntityByParams,
         isEntityPresent,
@@ -28,6 +34,7 @@ router.get('/', postController.getPosts);
 router.post(
     '/',
     validateByParam(createPost),
+    validateToken(ACCESS),
     postController.createPost,
 );
 
@@ -41,14 +48,17 @@ router.get(
 );
 router.patch(
     '/:postId',
+    validateToken(ACCESS),
     getEntityByParams(Post, POST_ID, PARAMS, _ID),
     isEntityPresent,
     postController.updatePost,
 );
 router.delete(
     '/:postId',
+    validateToken(ACCESS),
     getEntityByParams(Post, POST_ID, PARAMS, _ID),
     isEntityPresent,
     postController.deletePost,
 );
+
 module.exports = router;

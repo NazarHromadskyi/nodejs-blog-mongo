@@ -1,5 +1,5 @@
 const { postService, userService } = require('../services');
-const { CREATED } = require('../config/statusCodes');
+const { CREATED, DELETED } = require('../config/statusCodes');
 const { objectNormalizer: { normalize } } = require('../utils');
 
 module.exports = {
@@ -76,7 +76,7 @@ module.exports = {
                 },
             });
 
-            res.json();
+            res.status(DELETED).json();
         } catch (e) {
             next(e);
         }
