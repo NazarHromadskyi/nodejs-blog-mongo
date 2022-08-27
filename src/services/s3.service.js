@@ -18,10 +18,10 @@ const Bucket = new S3({
 });
 
 module.exports = {
-    uploadFile: (file, fileType, fileId) => {
+    uploadFile: (file, fileType, userId) => {
         const { data, mimetype, name } = file;
 
-        const uploadFilePath = filePathBuilder(name, fileType, fileId.toString());
+        const uploadFilePath = filePathBuilder(name, fileType, userId.toString());
 
         return Bucket
             .upload({
@@ -45,8 +45,8 @@ module.exports = {
     },
 };
 
-function filePathBuilder(fileName, fileType, fileId) {
+function filePathBuilder(fileName, fileType, userId) {
     const fileExtension = path.extname(fileName);
 
-    return `${fileType}/${fileId}/${uuid.v4()}${fileExtension}`;
+    return `users/${userId}/${fileType}/${uuid.v4()}${fileExtension}`;
 }

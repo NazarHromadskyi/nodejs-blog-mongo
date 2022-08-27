@@ -17,6 +17,10 @@ const createPost = Joi.object({
         .array()
         .required(),
 
+    imageUrl: Joi
+        .string()
+        .trim(),
+
     user: Joi
         .string()
         .trim()

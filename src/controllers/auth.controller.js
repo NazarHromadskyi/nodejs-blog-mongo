@@ -49,9 +49,15 @@ module.exports = {
                 refreshToken,
             }, entity._id);
 
-            res.cookie(ACCESS_TOKEN, accessToken, cookieOptions);
+            res.cookie(ACCESS_TOKEN, accessToken, {
+                ...cookieOptions,
+                httpOnly: false,
+            });
             res.cookie(REFRESH_TOKEN, refreshToken, cookieOptions);
-            res.cookie(USER_ID, entity._id.toString(), cookieOptions);
+            res.cookie(USER_ID, entity._id.toString(),{
+                ...cookieOptions,
+                httpOnly: false,
+            });
             res.cookie(IS_LOGGED_IN, true, {
                 ...cookieOptions,
                 httpOnly: false,
@@ -84,9 +90,15 @@ module.exports = {
                 refreshToken,
             }, user._id);
 
-            res.cookie(ACCESS_TOKEN, accessToken, cookieOptions);
+            res.cookie(ACCESS_TOKEN, accessToken, {
+                ...cookieOptions,
+                httpOnly: false,
+            });
             res.cookie(REFRESH_TOKEN, refreshToken, cookieOptions);
-            res.cookie(USER_ID, user._id.toString(), cookieOptions);
+            res.cookie(USER_ID, user._id.toString(), {
+                ...cookieOptions,
+                httpOnly: false,
+            });
             res.cookie(IS_LOGGED_IN, true, {
                 ...cookieOptions,
                 httpOnly: false,
