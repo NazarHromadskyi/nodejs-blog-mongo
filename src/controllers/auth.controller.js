@@ -24,6 +24,7 @@ const { objectNormalizer } = require('../utils');
 const cookieOptions = {
     httpOnly: true,
     maxAge: 24 * 60 * 60 * 1000, // 24 hours
+    sameSite: 'Lax',
 };
 
 module.exports = {

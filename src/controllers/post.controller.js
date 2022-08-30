@@ -1,4 +1,7 @@
-const { postService, userService } = require('../services');
+const {
+    postService, userService,
+    s3Service,
+} = require('../services');
 const { CREATED, DELETED } = require('../config/statusCodes');
 const { objectNormalizer: { normalize } } = require('../utils');
 
@@ -75,6 +78,10 @@ module.exports = {
                     posts: entity._id,
                 },
             });
+
+            if (entity.imageUrl) {
+                await s3Service.deleteFile(entity.imageUrl);
+            }
 
             res.status(DELETED).json();
         } catch (e) {
