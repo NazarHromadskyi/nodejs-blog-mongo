@@ -50,12 +50,9 @@ module.exports = {
                 refreshToken,
             }, entity._id);
 
-            res.cookie(ACCESS_TOKEN, accessToken, {
-                ...cookieOptions,
-                httpOnly: false,
-            });
+            res.cookie(ACCESS_TOKEN, accessToken, cookieOptions);
             res.cookie(REFRESH_TOKEN, refreshToken, cookieOptions);
-            res.cookie(USER_ID, entity._id.toString(),{
+            res.cookie(USER_ID, entity._id.toString(), {
                 ...cookieOptions,
                 httpOnly: false,
             });
