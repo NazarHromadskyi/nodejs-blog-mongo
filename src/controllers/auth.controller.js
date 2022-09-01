@@ -62,10 +62,7 @@ module.exports = {
             });
 
             res.status(CREATED)
-                .json({
-                    accessToken,
-                    user: objectNormalizer.normalize(entity),
-                });
+                .json({ user: objectNormalizer.normalize(entity) });
         } catch (e) {
             next(e);
         }
@@ -103,10 +100,7 @@ module.exports = {
             });
 
             res.status(CREATED)
-                .json({
-                    accessToken,
-                    user: objectNormalizer.normalize(user),
-                });
+                .json({ user: objectNormalizer.normalize(user) });
         } catch (e) {
             next(e);
         }
