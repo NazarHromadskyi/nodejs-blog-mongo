@@ -60,12 +60,13 @@ const userSchema = new Schema({
 });
 
 userSchema.pre('find', function () {
-    this.populate('posts', '-__v -user');
-    this.populate('comments', '-__v');
+    this.populate('posts', '-__v -user -comments');
+    this.populate('comments', '-__v -user -post');
 });
 
 userSchema.pre('findOne', function () {
-    this.populate('posts', '-__v -user');
+    this.populate('posts', '-__v -user -comments');
+    this.populate('comments', '-__v -user -post');
 });
 
 module.exports = model(USER, userSchema);

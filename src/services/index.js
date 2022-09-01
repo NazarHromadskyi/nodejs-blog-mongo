@@ -1,5 +1,6 @@
 module.exports = {
     authService: require('./auth.service'),
+    commentService: require('./comment.service'),
     jwtService: require('./jwt.service'),
     passwordService: require('./password.service'),
     postService: require('./post.service'),
