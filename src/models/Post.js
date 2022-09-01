@@ -2,6 +2,7 @@ const { Schema, model } = require('mongoose');
 
 const {
     modelNames: {
+        COMMENT,
         POST,
         USER,
     },
@@ -42,6 +43,11 @@ const postSchema = new Schema({
         required: true,
         default: null,
     },
+
+    comments: [{
+        type: Schema.Types.ObjectId,
+        ref: COMMENT,
+    }],
 }, {
     timestamps: true,
     toObject: { virtuals: true },
@@ -49,6 +55,7 @@ const postSchema = new Schema({
 
 postSchema.pre('find', function () {
     this.populate('user', '-posts -password -__v');
+    this.populate('comments', '-__v');
 });
 
 postSchema.pre('findOne', function () {

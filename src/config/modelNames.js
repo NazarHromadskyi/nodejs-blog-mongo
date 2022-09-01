@@ -1,6 +1,7 @@
 module.exports = {
-    ACTION_TOKEN: 'ActionToken',
-    OAUTH: 'OAuth',
-    POST: 'Post',
-    USER: 'User',
+    ACTION_TOKEN: 'actionToken',
+    COMMENT: 'comment',
+    OAUTH: 'oauth',
+    POST: 'post',
+    USER: 'user',
 };
