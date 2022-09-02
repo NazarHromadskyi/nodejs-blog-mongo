@@ -8,6 +8,7 @@ const {
         COMMENT_ID,
         POST_ID,
         PARAMS,
+        QUERY,
     },
     tokenTypes: {
         ACCESS,
@@ -38,7 +39,6 @@ const {
     Post,
     Comment,
 } = require('../models');
-const { BODY } = require('../config/searchParams');
 
 // -- /POSTS
 router.get('/', postController.getPosts);
@@ -52,7 +52,7 @@ router.post(
 // -- /POSTS/COMMENTS
 router.get(
     '/comments',
-    getEntityByParams(Post, POST_ID, BODY, _ID),
+    getEntityByParams(Post, POST_ID, QUERY, _ID),
     isEntityPresent,
     commentController.getAllForPost,
 );
