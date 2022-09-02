@@ -33,4 +33,9 @@ const commentSchema = new Schema({
     toObject: { virtuals: true },
 });
 
+commentSchema.pre('find', function () {
+    this.populate('user', '-posts -password -__v -comments');
+    this.select('-post');
+});
+
 module.exports = model(COMMENT, commentSchema);

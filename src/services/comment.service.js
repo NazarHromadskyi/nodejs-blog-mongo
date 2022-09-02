@@ -1,7 +1,7 @@
 const { Comment } = require('../models');
 
 module.exports = {
-    getAll: () => Comment.find(),
+    getAllForPost: (postId) => Comment.find({ post: postId }),
 
     getOneByParam: (filter = {}) => Comment.findOne(filter),
 

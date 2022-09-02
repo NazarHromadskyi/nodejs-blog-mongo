@@ -11,9 +11,10 @@ const {
 const { objectNormalizer } = require('../utils');
 
 module.exports = {
-    getAll: async (req, res, next) => {
+    getAllForPost: async (req, res, next) => {
         try {
-            const items = await commentService.getAll();
+            const { entity } = req;
+            const items = await commentService.getAllForPost(entity._id);
             const normalizedItems = items.map((item) => objectNormalizer.normalize(item));
 
             res.json(normalizedItems);

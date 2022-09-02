@@ -38,6 +38,7 @@ const {
     Post,
     Comment,
 } = require('../models');
+const { BODY } = require('../config/searchParams');
 
 // -- /POSTS
 router.get('/', postController.getPosts);
@@ -49,7 +50,12 @@ router.post(
 );
 
 // -- /POSTS/COMMENTS
-router.get('/comments', commentController.getAll);
+router.get(
+    '/comments',
+    getEntityByParams(Post, POST_ID, BODY, _ID),
+    isEntityPresent,
+    commentController.getAllForPost,
+);
 router.post(
     '/comments',
     validateByParam(commentsValidator.create),
