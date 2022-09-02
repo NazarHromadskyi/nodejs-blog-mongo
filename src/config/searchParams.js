@@ -5,4 +5,5 @@ module.exports = {
     PARAMS: 'params',
     POST_ID: 'postId',
     USER_ID: 'userId',
+    QUERY: 'query',
 };
