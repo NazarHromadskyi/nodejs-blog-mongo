@@ -55,7 +55,6 @@ const postSchema = new Schema({
 
 postSchema.pre('find', function () {
     this.populate('user', '-posts -password -__v -comments');
-    this.select('-comments');
 });
 
 postSchema.pre('findOne', function () {

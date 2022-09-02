@@ -30,14 +30,16 @@ const createPost = Joi.object({
 const updatePost = Joi.object({
     title: Joi
         .string()
-        .alphanum()
         .min(2)
         .trim(),
 
     text: Joi
         .string()
-        .alphanum()
         .min(2)
+        .trim(),
+
+    imageUrl: Joi
+        .string()
         .trim(),
 
     tags: Joi
@@ -46,6 +48,10 @@ const updatePost = Joi.object({
     viewsCount: Joi
         .number()
         .min(0),
+
+    user: Joi
+        .string()
+        .trim(),
 });
 
 module.exports = {
