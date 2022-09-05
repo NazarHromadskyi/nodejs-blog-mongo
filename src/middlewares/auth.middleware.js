@@ -18,7 +18,7 @@ module.exports = {
                 ? (
                     req.cookies[ACCESS_TOKEN]
                 ) : (
-                    req.cookies[REFRESH_TOKEN]);
+                    req.cookies[REFRESH_TOKEN]); // todo switch case for action token
 
             if (!token) {
                 throw new ApiError(UNAUTHORIZED, `${tokenType} token missed`);

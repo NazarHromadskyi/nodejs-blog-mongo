@@ -35,4 +35,10 @@ router.get(
     authController.refresh,
 );
 
+router.get(
+    '/getMe',
+    validateToken(tokenTypes.ACCESS),
+    authController.getMe,
+);
+
 module.exports = router;
