@@ -7,6 +7,7 @@ const {
         USER,
     },
 } = require('../config');
+const passwordService = require('../services/password.service'); // require directly to avoid circular dependency
 
 const userSchema = new Schema({
     firstName: {
@@ -57,6 +58,13 @@ const userSchema = new Schema({
 }, {
     timestamps: true,
     toObject: { virtuals: true },
+    statics: {
+        async createUserWithHashPassword(userObject = {}) {
+            const hashedPassword = await passwordService.hash(userObject.password);
+
+            return this.create({ ...userObject, password: hashedPassword });
+        },
+    },
 });
 
 userSchema.pre('find', function () {
