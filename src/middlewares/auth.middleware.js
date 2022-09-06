@@ -1,4 +1,7 @@
 const {
+    fieldsName: { ACCESS_TOKEN, REFRESH_TOKEN },
+    messagesKeywords: { MISSED_TOKEN, INVALID_TOKEN },
+    tokenTypes: { ACCESS },
     statusCodes: { UNAUTHORIZED },
 } = require('../config');
 const { ApiError } = require('../errors');
@@ -6,10 +9,7 @@ const {
     authService,
     jwtService,
 } = require('../services');
-const {
-    fieldsName: { ACCESS_TOKEN, REFRESH_TOKEN },
-    tokenTypes: { ACCESS },
-} = require('../config');
+const { messageBuilder: { getMessage } } = require('../utils');
 
 module.exports = {
     validateToken: (tokenType) => async (req, res, next) => {
@@ -21,7 +21,7 @@ module.exports = {
                     req.cookies[REFRESH_TOKEN]); // todo switch case for action token
 
             if (!token) {
-                throw new ApiError(UNAUTHORIZED, `${tokenType} token missed`);
+                throw new ApiError(UNAUTHORIZED, getMessage(MISSED_TOKEN, tokenType));
             }
 
             await jwtService.verifyToken(token, tokenType);
@@ -29,7 +29,7 @@ module.exports = {
             const tokenFromDB = await authService.findToken(token, tokenType);
 
             if (!tokenFromDB) {
-                throw new ApiError(UNAUTHORIZED, 'Invalid token');
+                throw new ApiError(UNAUTHORIZED, getMessage(INVALID_TOKEN, tokenType));
             }
 
             req.authorizedUser = tokenFromDB.user;

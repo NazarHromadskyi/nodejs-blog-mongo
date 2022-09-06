@@ -1,4 +1,8 @@
 const {
+    messagesKeywords: {
+        ACTION_ON_HIMSELF,
+        ALREADY_EXIST_USER,
+    },
     statusCodes: {
         BAD_REQUEST,
         FORBIDDEN,
@@ -6,6 +10,7 @@ const {
 } = require('../config');
 const { ApiError } = require('../errors');
 const { User } = require('../models');
+const { messageBuilder: { getMessage } } = require('../utils');
 
 module.exports = {
     isEmailUnique: async (req, res, next) => {
@@ -15,7 +20,7 @@ module.exports = {
             const userFromDb = await User.findOne({ email });
 
             if (userFromDb) {
-                throw new ApiError(BAD_REQUEST, 'User already exist');
+                throw new ApiError(BAD_REQUEST, getMessage(ALREADY_EXIST_USER, email));
             }
 
             next();
@@ -30,7 +35,7 @@ module.exports = {
             const userToAction = req.entity;
 
             if (authorizedUser._id.toString() !== userToAction._id.toString()) {
-                throw new ApiError(FORBIDDEN, 'You are not allowed to edit other users');
+                throw new ApiError(FORBIDDEN, getMessage(ACTION_ON_HIMSELF));
             }
 
             next();

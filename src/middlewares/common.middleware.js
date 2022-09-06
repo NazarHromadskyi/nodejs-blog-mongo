@@ -1,9 +1,10 @@
 const {
+    messagesKeywords: { NOT_FOUND_ENTITY },
     searchParams,
-    statusCodes: { BAD_REQUEST },
+    statusCodes: { BAD_REQUEST, NOT_FOUND },
 } = require('../config');
 const { ApiError } = require('../errors');
-const { NOT_FOUND } = require('../config/statusCodes');
+const { messageBuilder } = require('../utils');
 
 module.exports = {
     getEntityByParams: (
@@ -28,7 +29,7 @@ module.exports = {
             const { entity } = req;
 
             if (!entity) {
-                throw new ApiError(NOT_FOUND, 'Entity not found');
+                throw new ApiError(NOT_FOUND, messageBuilder.getMessage(NOT_FOUND_ENTITY));
             }
 
             next();
