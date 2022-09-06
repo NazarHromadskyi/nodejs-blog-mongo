@@ -62,6 +62,10 @@ router.post(
     validateToken(ACCESS),
     commentController.create,
 );
+router.get(
+    '/comments/latest',
+    commentController.getLatest,
+);
 router.patch(
     '/comments/:commentId',
     validateByParam(commentsValidator.update),

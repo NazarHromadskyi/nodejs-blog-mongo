@@ -9,6 +9,7 @@ const {
     userService,
 } = require('../services');
 const { objectNormalizer } = require('../utils');
+const { Post } = require('../models');
 
 module.exports = {
     getAllForPost: async (req, res, next) => {
@@ -23,12 +24,12 @@ module.exports = {
         }
     },
 
-    getOne: async (req, res, next) => {
+    getLatest: async (req, res, next) => {
         try {
-            const { entity } = req;
-            const normalizedItem = objectNormalizer.normalize(entity);
+            const items = await commentService.getLatest();
+            const normalizedItems = items.map((item) => objectNormalizer.normalize(item));
 
-            res.json(normalizedItem);
+            res.json(normalizedItems);
         } catch (e) {
             next(e);
         }

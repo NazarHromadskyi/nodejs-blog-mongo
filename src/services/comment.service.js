@@ -3,7 +3,7 @@ const { Comment } = require('../models');
 module.exports = {
     getAllForPost: (postId) => Comment.find({ post: postId }),
 
-    getOneByParam: (filter = {}) => Comment.findOne(filter),
+    getLatest: () => Comment.find().sort({ createdAt: -1 }).limit(5),
 
     create: (data) => Comment.create(data),
 
