@@ -7,7 +7,7 @@
   "scripts": {
     "lint": "eslint --cache --ext .js,.ts src",
     "lint:fix": "npm run lint -- --fix",
-    "start": "nodemon src/app.js"
+    "dev": "nodemon src/app.js"
   },
   "author": "NH",
   "license": "ISC",

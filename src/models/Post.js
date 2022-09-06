@@ -2,6 +2,7 @@ const { Schema, model } = require('mongoose');
 
 const {
     modelNames: {
+        COMMENT,
         POST,
         USER,
     },
@@ -42,17 +43,23 @@ const postSchema = new Schema({
         required: true,
         default: null,
     },
+
+    comments: [{
+        type: Schema.Types.ObjectId,
+        ref: COMMENT,
+    }],
 }, {
     timestamps: true,
     toObject: { virtuals: true },
 });
 
 postSchema.pre('find', function () {
-    this.populate('user', '-posts -password -__v');
+    this.populate('user', '-posts -password -__v -comments');
 });
 
 postSchema.pre('findOne', function () {
-    this.populate('user', '-posts -password -__v');
+    this.populate('user', '-posts -password -__v -comments');
+    this.populate('comments', '-__v -user -post');
 });
 
 module.exports = model(POST, postSchema);

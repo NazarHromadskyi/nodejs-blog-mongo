@@ -2,10 +2,12 @@ const { Schema, model } = require('mongoose');
 
 const {
     modelNames: {
+        COMMENT,
         POST,
         USER,
     },
 } = require('../config');
+const passwordService = require('../services/password.service'); // require directly to avoid circular dependency
 
 const userSchema = new Schema({
     firstName: {
@@ -48,17 +50,31 @@ const userSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: POST,
     }],
+
+    comments: [{
+        type: Schema.Types.ObjectId,
+        ref: COMMENT,
+    }],
 }, {
     timestamps: true,
     toObject: { virtuals: true },
+    statics: {
+        async createUserWithHashPassword(userObject = {}) {
+            const hashedPassword = await passwordService.hash(userObject.password);
+
+            return this.create({ ...userObject, password: hashedPassword });
+        },
+    },
 });
 
 userSchema.pre('find', function () {
-    this.populate('posts', '-__v -user');
+    this.populate('posts', '-__v -user -comments');
+    this.populate('comments', '-__v -user -post');
 });
 
 userSchema.pre('findOne', function () {
-    this.populate('posts', '-__v -user');
+    this.populate('posts', '-__v -user -comments');
+    this.populate('comments', '-__v -user -post');
 });
 
 module.exports = model(USER, userSchema);

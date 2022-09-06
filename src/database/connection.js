@@ -13,6 +13,7 @@ module.exports = {
     connectDb: async () => {
         try {
             await mongoose.connect(`${MONGO_CONNECTION}${DATABASE_NAME}`);
+
             console.log('Database connected');
         } catch (e) {
             throw new ApiError(statusCodes.SERVER_ERROR, e.message);

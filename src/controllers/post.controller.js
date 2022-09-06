@@ -20,8 +20,9 @@ module.exports = {
     getPostById: async (req, res, next) => {
         try {
             const { entity } = req;
+            const normalizedItem = normalize(entity);
 
-            res.json(entity);
+            res.json(normalizedItem);
         } catch (e) {
             next(e);
         }

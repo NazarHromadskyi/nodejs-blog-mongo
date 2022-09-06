@@ -52,20 +52,13 @@ module.exports = {
 
             res.cookie(ACCESS_TOKEN, accessToken, cookieOptions);
             res.cookie(REFRESH_TOKEN, refreshToken, cookieOptions);
-            res.cookie(USER_ID, entity._id.toString(), {
-                ...cookieOptions,
-                httpOnly: false,
-            });
             res.cookie(IS_LOGGED_IN, true, {
                 ...cookieOptions,
                 httpOnly: false,
             });
 
             res.status(CREATED)
-                .json({
-                    accessToken,
-                    user: objectNormalizer.normalize(entity),
-                });
+                .json({ user: objectNormalizer.normalize(entity) });
         } catch (e) {
             next(e);
         }
@@ -93,20 +86,13 @@ module.exports = {
                 httpOnly: false,
             });
             res.cookie(REFRESH_TOKEN, refreshToken, cookieOptions);
-            res.cookie(USER_ID, user._id.toString(), {
-                ...cookieOptions,
-                httpOnly: false,
-            });
             res.cookie(IS_LOGGED_IN, true, {
                 ...cookieOptions,
                 httpOnly: false,
             });
 
             res.status(CREATED)
-                .json({
-                    accessToken,
-                    user: objectNormalizer.normalize(user),
-                });
+                .json({ user: objectNormalizer.normalize(user) });
         } catch (e) {
             next(e);
         }
@@ -121,9 +107,19 @@ module.exports = {
             res.cookie(ACCESS_TOKEN, '', { maxAge: 1 });
             res.cookie(REFRESH_TOKEN, '', { maxAge: 1 });
             res.cookie(IS_LOGGED_IN, '', { maxAge: 1 });
-            res.cookie(USER_ID, '', { maxAge: 1 });
 
             res.sendStatus(DELETED);
+        } catch (e) {
+            next(e);
+        }
+    },
+
+    getMe: async (req, res, next) => {
+        try {
+            const { authorizedUser } = req;
+            const normalizedUser = objectNormalizer.normalize(authorizedUser);
+
+            res.json(normalizedUser);
         } catch (e) {
             next(e);
         }

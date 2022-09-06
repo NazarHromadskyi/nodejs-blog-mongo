@@ -2,6 +2,9 @@ const jwt = require('jsonwebtoken');
 const util = require('util');
 
 const {
+    messagesKeywords: {
+        INVALID_TOKEN,
+    },
     statusCodes: {
         UNAUTHORIZED,
     },
@@ -12,6 +15,7 @@ const {
     },
 } = require('../config');
 const { ApiError } = require('../errors');
+const { messageBuilder: { getMessage } } = require('../utils');
 
 const verifyPromise = util.promisify(jwt.verify);
 
@@ -38,11 +42,9 @@ module.exports = {
         try {
             const secretKey = tokenType === ACCESS ? ACCESS_SECRET_KEY : REFRESH_SECRET_KEY;
 
-            // console.log(`[${tokenType}, ${token}]`); // todo remove
-
             await verifyPromise(token, secretKey);
         } catch (e) {
-            throw new ApiError(UNAUTHORIZED, 'Invalid token');
+            throw new ApiError(UNAUTHORIZED, getMessage(INVALID_TOKEN, tokenType));
         }
     },
 };
