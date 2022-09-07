@@ -16,7 +16,7 @@ const {
 const messages = {
     [INVALID_KEYWORD]: 'Invalid keyword',
 
-    [INVALID_TOKEN]: 'This is test message',
+    [INVALID_TOKEN]: 'Invalid token',
     [MISSED_TOKEN]: 'Token missed',
 
     [NOT_FOUND_ENTITY]: 'Entity not found',
