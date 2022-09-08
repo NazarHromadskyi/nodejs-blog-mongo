@@ -11,6 +11,7 @@ module.exports = {
         IMAGE: [
             'image/jpeg',
             'image/png',
+            'image/webp',
         ],
     },
 };

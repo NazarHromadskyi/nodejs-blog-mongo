@@ -16,12 +16,12 @@ const {
 const messages = {
     [INVALID_KEYWORD]: 'Invalid keyword',
 
-    [INVALID_TOKEN]: 'This is test message',
+    [INVALID_TOKEN]: 'Invalid token',
     [MISSED_TOKEN]: 'Token missed',
 
     [NOT_FOUND_ENTITY]: 'Entity not found',
 
-    [ALLOWED_IMG_FORMAT]: 'Only .jpeg, .jpg and .png format supported',
+    [ALLOWED_IMG_FORMAT]: 'Only .jpeg, .jpg, .png, .webp formats supported',
     [MAX_SIZE_IMG]: 'Image size is too big. Max size is 5 Mb. Your file size is:',
     [MISSED_IMG]: 'Image file missed',
 
