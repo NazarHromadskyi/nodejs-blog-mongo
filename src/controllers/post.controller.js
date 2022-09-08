@@ -8,7 +8,7 @@ const { objectNormalizer: { normalize } } = require('../utils');
 module.exports = {
     getPosts: async (req, res, next) => {
         try {
-            const posts = await postService.getAll();
+            const posts = await postService.getAllByFilter();
             const normalizedPosts = posts.map((post) => normalize(post));
 
             res.json(normalizedPosts);
@@ -23,6 +23,18 @@ module.exports = {
             const normalizedItem = normalize(entity);
 
             res.json(normalizedItem);
+        } catch (e) {
+            next(e);
+        }
+    },
+
+    getPostsByTag: async (req, res, next) => {
+        try {
+            const { tagName } = req.params;
+            const items = await postService.getAllByFilter({ tags: tagName });
+            const normalizedItems = items.map((item) => normalize(item));
+
+            res.json(normalizedItems);
         } catch (e) {
             next(e);
         }
