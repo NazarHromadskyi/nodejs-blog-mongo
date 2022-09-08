@@ -84,6 +84,7 @@ router.delete(
 
 // -- /POSTS/TAGS
 router.get('/tags', postController.getTags);
+router.get('/tags/:tagName', postController.getPostsByTag);
 
 // -- /POSTS/:POST_ID
 router.get(
