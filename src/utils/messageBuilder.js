@@ -21,7 +21,7 @@ const messages = {
 
     [NOT_FOUND_ENTITY]: 'Entity not found',
 
-    [ALLOWED_IMG_FORMAT]: 'Only .jpeg, .jpg and .png format supported',
+    [ALLOWED_IMG_FORMAT]: 'Only .jpeg, .jpg, .png, .webp formats supported',
     [MAX_SIZE_IMG]: 'Image size is too big. Max size is 5 Mb. Your file size is:',
     [MISSED_IMG]: 'Image file missed',
 
