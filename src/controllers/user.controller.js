@@ -33,7 +33,7 @@ module.exports = {
 
     createUser: async (req, res, next) => {
         try {
-            const createdUser = await User.createUserWithHashPassword(req.body);
+            const createdUser = await User.createUserWithHashPassword(req.validEntity);
 
             const normalizedUser = normalize(createdUser);
 
@@ -46,7 +46,7 @@ module.exports = {
     updateUser: async (req, res, next) => {
         try {
             const { userId } = req.params;
-            const updatedUser = await userService.update(userId, req.body);
+            const updatedUser = await userService.update(userId, req.validEntity);
             const normalizedUser = normalize(updatedUser);
 
             res.json(normalizedUser);

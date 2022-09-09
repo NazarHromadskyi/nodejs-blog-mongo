@@ -53,7 +53,7 @@ module.exports = {
     createPost: async (req, res, next) => {
         try {
             const { user } = req.body;
-            const createdPost = await postService.create(req.body);
+            const createdPost = await postService.create(req.validEntity);
 
             await userService.update(user, {
                 $push: {
@@ -72,7 +72,7 @@ module.exports = {
     updatePost: async (req, res, next) => {
         try {
             const { postId } = req.params;
-            const updatedPost = await postService.update(postId, req.body);
+            const updatedPost = await postService.update(postId, req.validEntity);
             const normalizedPost = normalize(updatedPost);
 
             res.json(normalizedPost);

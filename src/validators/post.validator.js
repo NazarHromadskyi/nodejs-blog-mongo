@@ -15,6 +15,7 @@ const createPost = Joi.object({
 
     tags: Joi
         .array()
+        .items(Joi.string().trim().lowercase())
         .required(),
 
     imageUrl: Joi
@@ -43,7 +44,8 @@ const updatePost = Joi.object({
         .trim(),
 
     tags: Joi
-        .array(),
+        .array()
+        .items(Joi.string().trim().lowercase()),
 
     viewsCount: Joi
         .number()

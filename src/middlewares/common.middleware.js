@@ -43,12 +43,13 @@ module.exports = {
         searchIn = searchParams.BODY,
     ) => (req, res, next) => {
         try {
-            const { error } = validator.validate(req[searchIn]);
+            const { error, value } = validator.validate(req[searchIn]);
 
             if (error) {
                 throw new ApiError(BAD_REQUEST, error.details[0].message);
             }
 
+            req.validEntity = value;
             next();
         } catch (e) {
             next(e);
