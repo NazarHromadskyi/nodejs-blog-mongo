@@ -30,7 +30,7 @@ module.exports = {
             .limit(+perPage)
             .skip((page - 1) * perPage);
 
-        const totalResults = await Post.countDocuments({});
+        const totalResults = await Post.countDocuments(filterObject);
         const totalPages = Math.ceil(totalResults / perPage);
 
         return {
