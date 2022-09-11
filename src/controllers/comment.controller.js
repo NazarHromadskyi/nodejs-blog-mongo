@@ -41,7 +41,7 @@ module.exports = {
                 user,
                 post,
             } = req.body;
-            const createdItem = await commentService.create(req.body);
+            const createdItem = await commentService.create(req.validEntity);
 
             await userService.update(user, {
                 $push: {
@@ -64,7 +64,7 @@ module.exports = {
     update: async (req, res, next) => {
         try {
             const { commentId } = req.params;
-            const updatedItem = await commentService.update(commentId, req.body);
+            const updatedItem = await commentService.update(commentId, req.validEntity);
             const normalizedItem = objectNormalizer.normalize(updatedItem);
 
             res.json(normalizedItem);
