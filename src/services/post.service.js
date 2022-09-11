@@ -3,20 +3,19 @@ const { Post } = require('../models');
 module.exports = {
     getAll: async (query = {}) => {
         const {
-            perPage = 10,
             page = 1,
             sortBy = 'createdAt',
-            order = 'desc',
+            order = 'asc',
             ...filters
         } = query;
-
+        const perPage = 5;
         const orderBy = order === 'asc' ? -1 : 1;
         const filterObject = {};
 
         Object.keys(filters).forEach((filterParam) => {
             switch (filterParam) {
                 case 'title': {
-                    filterObject.title = { $regex: `^${filters.title}`, $options: 'gi' };
+                    filterObject.title = { $regex: `${filters.title}`, $options: 'gi' }; // todo about gi
                     break;
                 }
                 default: {
@@ -31,7 +30,15 @@ module.exports = {
             .limit(+perPage)
             .skip((page - 1) * perPage);
 
-        return posts;
+        const totalResults = await Post.countDocuments({});
+        const totalPages = Math.ceil(totalResults / perPage);
+
+        return {
+            page: +page,
+            totalPages,
+            totalResults,
+            data: posts,
+        };
     },
 
     getTags: async () => {
