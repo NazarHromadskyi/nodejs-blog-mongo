@@ -43,7 +43,7 @@ const userSchema = new Schema({
     avatarUrl: {
         type: String,
         trim: true,
-        default: null,
+        default: null, // todo change to empty string
     },
 
     posts: [{
