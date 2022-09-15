@@ -1,9 +1,10 @@
 require('dotenv').config();
 
-const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const express = require('express');
 const fileUpload = require('express-fileupload');
+const sessions = require('express-session');
+const redis = require('redis');
 
 const {
     constants,
@@ -25,9 +26,21 @@ const {
     userRouter,
 } = require('./routes');
 
+const redisClient = redis.createClient(variables.REDIS_PORT);
+
 const app = express();
 
-app.use(cookieParser(variables.COOKIE_SECRET_KEY));
+app.set('trust proxy', 1);
+app.use(sessions({
+    secret: variables.SESSIONS_SECRET_KEY,
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        httpOnly: true,
+        maxAge: constants.ONE_DAY,
+    },
+}));
+
 app.use(cors({ origin: configureCors, credentials: true }));
 
 app.use(fileUpload());

@@ -13,6 +13,9 @@ module.exports = {
         try {
             const users = await userService.getAll();
             const normalizedUsers = users.map((user) => normalize(user));
+            const { session } = req;
+
+            console.log(session);
 
             res.json(normalizedUsers);
         } catch (e) {
