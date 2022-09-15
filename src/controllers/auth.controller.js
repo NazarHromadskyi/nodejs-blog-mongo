@@ -32,7 +32,7 @@ module.exports = {
         try {
             const {
                 entity,
-                validEntity: {
+                body: {
                     email,
                     password,
                 },

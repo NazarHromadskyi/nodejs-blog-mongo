@@ -49,7 +49,7 @@ module.exports = {
                 throw new ApiError(BAD_REQUEST, error.details[0].message);
             }
 
-            req.validEntity = value;
+            req.body = value;
             next();
         } catch (e) {
             next(e);
