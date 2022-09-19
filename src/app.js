@@ -1,6 +1,8 @@
 require('dotenv').config();
 
+const chalk = require('chalk');
 const cors = require('cors');
+const connectRedis = require('connect-redis');
 const express = require('express');
 const fileUpload = require('express-fileupload');
 const sessions = require('express-session');
@@ -26,15 +28,28 @@ const {
     userRouter,
 } = require('./routes');
 
-const redisClient = redis.createClient(variables.REDIS_PORT);
-
 const app = express();
 
 app.set('trust proxy', 1);
+const RedisStore = connectRedis(sessions);
+const redisClient = redis.createClient();
+
+(async function () {
+    await redisClient.connect();
+}());
+
+redisClient.on('error', (err) => {
+    console.log(chalk.red(`Could not establish a connection with redis. ${err}`));
+});
+redisClient.on('connect', () => {
+    console.log(chalk.greenBright('Connected to redis successfully'));
+});
+
 app.use(sessions({
+    store: new RedisStore({ client: redisClient }),
     secret: variables.SESSIONS_SECRET_KEY,
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     cookie: {
         httpOnly: true,
         maxAge: constants.ONE_DAY,
@@ -67,7 +82,7 @@ async function startApp() {
         await connection.connectDb();
 
         app.listen(variables.PORT, () => {
-            console.log(`App listen port: ${variables.PORT}`);
+            console.log(chalk.greenBright(`App listen port: ${variables.PORT}`));
         });
     } catch (e) {
         console.log(e);

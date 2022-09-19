@@ -13,6 +13,7 @@ const {
 const { userController } = require('../controllers');
 const {
     authMdlwr: {
+        sessionChecker,
         validateToken,
     },
     commonMdlwr: {
@@ -33,7 +34,11 @@ const {
 } = require('../validators');
 const { User } = require('../models');
 
-router.get('/', userController.getUsers);
+router.get(
+    '/',
+    sessionChecker,
+    userController.getUsers,
+);
 router.post(
     '/',
     validateByParam(createUser),

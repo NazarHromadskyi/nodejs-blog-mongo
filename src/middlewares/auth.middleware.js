@@ -1,6 +1,12 @@
 const {
-    fieldsName: { ACCESS_TOKEN, REFRESH_TOKEN },
-    messagesKeywords: { MISSED_TOKEN, INVALID_TOKEN },
+    fieldsName: {
+        ACCESS_TOKEN,
+        REFRESH_TOKEN,
+    },
+    messagesKeywords: {
+        MISSED_TOKEN,
+        INVALID_TOKEN,
+    },
     tokenTypes: { ACCESS },
     statusCodes: { UNAUTHORIZED },
 } = require('../config');
@@ -33,6 +39,16 @@ module.exports = {
             }
 
             req.authorizedUser = tokenFromDB.user;
+
+            next();
+        } catch (e) {
+            next(e);
+        }
+    },
+
+    sessionChecker: (req, res, next) => {
+        try {
+            console.log(`Session checker: ${req.session.id}`);
 
             next();
         } catch (e) {
