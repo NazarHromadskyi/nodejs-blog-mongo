@@ -26,13 +26,16 @@ const {
     postRouter,
     uploadRouter,
     userRouter,
+    sessionRouter,
 } = require('./routes');
 
 const app = express();
 
-app.set('trust proxy', 1);
+// app.set('trust proxy', 1);
 const RedisStore = connectRedis(sessions);
-const redisClient = redis.createClient();
+const redisClient = redis.createClient({
+    legacyMode: true,
+});
 
 (async function () {
     await redisClient.connect();
@@ -49,10 +52,12 @@ app.use(sessions({
     store: new RedisStore({ client: redisClient }),
     secret: variables.SESSIONS_SECRET_KEY,
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: true,
     cookie: {
         httpOnly: true,
         maxAge: constants.ONE_DAY,
+        secure: false,
+        sameSite: 'lax',
     },
 }));
 
@@ -71,6 +76,7 @@ app.use('/auth', authRouter);
 app.use('/posts', postRouter);
 app.use('/upload', uploadRouter);
 app.use('/users', userRouter);
+app.use('/session', sessionRouter);
 
 app.use('*', notFoundHandler);
 app.use(errorHandler);

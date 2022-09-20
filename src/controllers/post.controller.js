@@ -1,3 +1,4 @@
+const chalk = require('chalk');
 const {
     postService, userService,
     s3Service,
@@ -20,8 +21,24 @@ module.exports = {
     getPostById: async (req, res, next) => {
         try {
             const { entity } = req;
-            const normalizedItem = normalize(entity);
+            // const normalizedItem = normalize(entity);
+            // todo counter
+            if (req.session.viewsCount) {
+                req.session.viewsCount += 1;
+            } else {
+                req.session.viewsCount = 1;
+            }
+            // const currentViewsCount = entity.viewsCount;
+            // const totalViewsCount = currentViewsCount + req.session.viewsCount;
+            // console.log('SESSION', chalk.red(JSON.stringify(req.session.id)));
+            const updatedItem = await postService.update(
+                entity._id,
+                { viewsCount: req.session.viewsCount },
+            );
+            // console.log('UPDATED', chalk.blueBright(updatedItem));
+            const normalizedItem = normalize(updatedItem);
 
+            // console.log('ITEM', chalk.yellow(normalizedItem));
             res.json(normalizedItem);
         } catch (e) {
             next(e);

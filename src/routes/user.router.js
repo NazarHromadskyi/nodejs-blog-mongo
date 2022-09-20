@@ -13,7 +13,6 @@ const {
 const { userController } = require('../controllers');
 const {
     authMdlwr: {
-        sessionChecker,
         validateToken,
     },
     commonMdlwr: {
@@ -36,7 +35,6 @@ const { User } = require('../models');
 
 router.get(
     '/',
-    sessionChecker,
     userController.getUsers,
 );
 router.post(
