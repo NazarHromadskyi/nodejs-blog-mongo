@@ -21,8 +21,11 @@ module.exports = {
     getPostById: async (req, res, next) => {
         try {
             const { entity } = req;
+            req.session.postId = entity._id;
             // const normalizedItem = normalize(entity);
             // todo counter
+            // for this case we count views for every post as for one. Need to check if post
+            // different from previous
             if (req.session.viewsCount) {
                 req.session.viewsCount += 1;
             } else {
