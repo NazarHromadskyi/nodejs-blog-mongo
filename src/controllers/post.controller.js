@@ -41,7 +41,6 @@ module.exports = {
             // console.log('UPDATED', chalk.blueBright(updatedItem));
             const normalizedItem = normalize(updatedItem);
 
-            // console.log('ITEM', chalk.yellow(normalizedItem));
             res.json(normalizedItem);
         } catch (e) {
             next(e);
