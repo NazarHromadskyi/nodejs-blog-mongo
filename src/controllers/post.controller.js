@@ -1,4 +1,3 @@
-const chalk = require('chalk');
 const {
     postService, userService,
     s3Service,
@@ -21,24 +20,10 @@ module.exports = {
     getPostById: async (req, res, next) => {
         try {
             const { entity } = req;
-            req.session.postId = entity._id;
-            // const normalizedItem = normalize(entity);
-            // todo counter
-            // for this case we count views for every post as for one. Need to check if post
-            // different from previous
-            if (req.session.viewsCount) {
-                req.session.viewsCount += 1;
-            } else {
-                req.session.viewsCount = 1;
-            }
-            // const currentViewsCount = entity.viewsCount;
-            // const totalViewsCount = currentViewsCount + req.session.viewsCount;
-            // console.log('SESSION', chalk.red(JSON.stringify(req.session.id)));
             const updatedItem = await postService.update(
                 entity._id,
-                { viewsCount: req.session.viewsCount },
+                { viewsCount: entity.viewsCount + 1 }, // todo better counter
             );
-            // console.log('UPDATED', chalk.blueBright(updatedItem));
             const normalizedItem = normalize(updatedItem);
 
             res.json(normalizedItem);
