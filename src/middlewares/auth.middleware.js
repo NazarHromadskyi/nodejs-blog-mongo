@@ -45,14 +45,4 @@ module.exports = {
             next(e);
         }
     },
-
-    sessionChecker: (req, res, next) => {
-        try {
-            console.log(`Session checker: ${req.session.id}`);
-
-            next();
-        } catch (e) {
-            next(e);
-        }
-    },
 };

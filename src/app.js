@@ -1,12 +1,10 @@
 require('dotenv').config();
 
 const chalk = require('chalk');
+const cookieParser = require('cookie-parser');
 const cors = require('cors');
-const connectRedis = require('connect-redis');
 const express = require('express');
 const fileUpload = require('express-fileupload');
-const sessions = require('express-session');
-const redis = require('redis');
 
 const {
     constants,
@@ -26,41 +24,11 @@ const {
     postRouter,
     uploadRouter,
     userRouter,
-    sessionRouter,
 } = require('./routes');
 
 const app = express();
 
-// app.set('trust proxy', 1);
-const RedisStore = connectRedis(sessions);
-const redisClient = redis.createClient({
-    legacyMode: true,
-});
-
-(async function () {
-    await redisClient.connect();
-}());
-
-redisClient.on('error', (err) => {
-    console.log(chalk.red(`Could not establish a connection with redis. ${err}`));
-});
-redisClient.on('connect', () => {
-    console.log(chalk.greenBright('Connected to redis successfully'));
-});
-
-app.use(sessions({
-    store: new RedisStore({ client: redisClient }),
-    secret: variables.SESSIONS_SECRET_KEY,
-    resave: false,
-    saveUninitialized: true,
-    cookie: {
-        httpOnly: true,
-        maxAge: constants.ONE_DAY,
-        secure: false,
-        sameSite: 'lax',
-    },
-}));
-
+app.use(cookieParser(variables.COOKIE_SECRET_KEY));
 app.use(cors({ origin: configureCors, credentials: true }));
 
 app.use(fileUpload());
@@ -76,7 +44,6 @@ app.use('/auth', authRouter);
 app.use('/posts', postRouter);
 app.use('/upload', uploadRouter);
 app.use('/users', userRouter);
-app.use('/session', sessionRouter);
 
 app.use('*', notFoundHandler);
 app.use(errorHandler);

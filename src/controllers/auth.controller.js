@@ -49,7 +49,7 @@ module.exports = {
                 refreshToken,
             }, entity._id);
 
-            res.cookie(ACCESS_TOKEN, accessToken, cookieOptions); // todo use express-session
+            res.cookie(ACCESS_TOKEN, accessToken, cookieOptions);
             res.cookie(REFRESH_TOKEN, refreshToken, cookieOptions);
             res.cookie(IS_LOGGED_IN, true, {
                 ...cookieOptions,

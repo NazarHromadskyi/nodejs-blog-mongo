@@ -3,6 +3,5 @@ module.exports = {
     postRouter: require('./post.router'),
     uploadRouter: require('./upload.router'),
     userRouter: require('./user.router'),
-    sessionRouter: require('./session-test.router'),
 
 };
