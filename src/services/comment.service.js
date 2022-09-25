@@ -9,5 +9,5 @@ module.exports = {
 
     update: (id, data) => Comment.findByIdAndUpdate(id, data),
 
-    delete: (filter = {}) => Comment.findOneAndDelete(filter),
+    delete: (filter = {}) => Comment.deleteMany(filter),
 };

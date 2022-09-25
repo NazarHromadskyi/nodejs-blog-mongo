@@ -1,5 +1,7 @@
 const {
-    postService, userService,
+    commentService,
+    postService,
+    userService,
     s3Service,
 } = require('../services');
 const { CREATED, DELETED } = require('../config/statusCodes');
@@ -95,6 +97,7 @@ module.exports = {
                     posts: entity._id,
                 },
             });
+            await commentService.delete({ post: entity._id });
 
             if (entity.imageUrl) {
                 await s3Service.deleteFile(entity.imageUrl);

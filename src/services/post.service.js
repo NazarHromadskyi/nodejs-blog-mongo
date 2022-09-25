@@ -49,7 +49,9 @@ module.exports = {
 
     create: (post) => Post.create(post),
 
-    update: (id, dataToUpdate) => Post.findByIdAndUpdate(id, dataToUpdate, { new: true }),
+    update: (id, dataToUpdate) => Post
+        .findByIdAndUpdate(id, dataToUpdate, { new: true })
+        .populate('user', '-posts -password -__v -comments'),
 
     delete: (id) => Post.findByIdAndDelete(id),
 };
