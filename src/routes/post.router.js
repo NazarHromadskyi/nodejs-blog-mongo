@@ -20,6 +20,7 @@ const {
 } = require('../controllers');
 const {
     authMdlwr: {
+        sessionChecker,
         validateToken,
     },
     commonMdlwr: {
@@ -89,6 +90,7 @@ router.get('/tags/:tagName', postController.getPostsByTag);
 // -- /POSTS/:POST_ID
 router.get(
     '/:postId',
+    // sessionChecker,
     getEntityByParams(Post, POST_ID, PARAMS, _ID),
     isEntityPresent,
     postController.getPostById,

@@ -1,3 +1,4 @@
+const chalk = require('chalk');
 const mongoose = require('mongoose');
 
 const {
@@ -14,7 +15,7 @@ module.exports = {
         try {
             await mongoose.connect(`${MONGO_CONNECTION}${DATABASE_NAME}`);
 
-            console.log('Database connected');
+            console.log(chalk.greenBright('Database connected'));
         } catch (e) {
             throw new ApiError(statusCodes.SERVER_ERROR, e.message);
         }

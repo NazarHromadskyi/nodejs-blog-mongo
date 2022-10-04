@@ -3,7 +3,6 @@ const {
         ACCESS_TOKEN,
         REFRESH_TOKEN,
         IS_LOGGED_IN,
-        USER_ID,
     },
     statusCodes: {
         CREATED,
@@ -23,7 +22,7 @@ const { objectNormalizer } = require('../utils');
 
 const cookieOptions = {
     httpOnly: true,
-    maxAge: 24 * 60 * 60 * 1000, // 24 hours
+    maxAge: 24 * 60 * 60 * 1000, // 24 hours todo const
     sameSite: 'Lax',
 };
 
@@ -50,7 +49,7 @@ module.exports = {
                 refreshToken,
             }, entity._id);
 
-            res.cookie(ACCESS_TOKEN, accessToken, cookieOptions); // todo use express-session
+            res.cookie(ACCESS_TOKEN, accessToken, cookieOptions);
             res.cookie(REFRESH_TOKEN, refreshToken, cookieOptions);
             res.cookie(IS_LOGGED_IN, true, {
                 ...cookieOptions,

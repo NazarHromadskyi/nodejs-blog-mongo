@@ -1,5 +1,7 @@
 const {
-    postService, userService,
+    commentService,
+    postService,
+    userService,
     s3Service,
 } = require('../services');
 const { CREATED, DELETED } = require('../config/statusCodes');
@@ -20,7 +22,11 @@ module.exports = {
     getPostById: async (req, res, next) => {
         try {
             const { entity } = req;
-            const normalizedItem = normalize(entity);
+            const updatedItem = await postService.update(
+                entity._id,
+                { viewsCount: entity.viewsCount + 1 }, // todo better counter
+            );
+            const normalizedItem = normalize(updatedItem);
 
             res.json(normalizedItem);
         } catch (e) {
@@ -91,6 +97,7 @@ module.exports = {
                     posts: entity._id,
                 },
             });
+            await commentService.delete({ post: entity._id });
 
             if (entity.imageUrl) {
                 await s3Service.deleteFile(entity.imageUrl);

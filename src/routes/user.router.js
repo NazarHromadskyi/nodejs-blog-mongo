@@ -33,7 +33,10 @@ const {
 } = require('../validators');
 const { User } = require('../models');
 
-router.get('/', userController.getUsers);
+router.get(
+    '/',
+    userController.getUsers,
+);
 router.post(
     '/',
     validateByParam(createUser),

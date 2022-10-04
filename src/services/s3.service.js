@@ -23,14 +23,13 @@ module.exports = {
 
         const uploadFilePath = filePathBuilder(name, fileType, userId.toString());
 
-        return Bucket
-            .upload({
-                Bucket: BUCKET_NAME,
-                Body: data,
-                Key: uploadFilePath,
-                ContentType: mimetype,
-            })
-            .promise();
+        return Bucket.upload({
+            ACL: 'public-read',
+            Bucket: BUCKET_NAME,
+            Body: data,
+            Key: uploadFilePath,
+            ContentType: mimetype,
+        }).promise();
     },
 
     deleteFile: (filePath) => {

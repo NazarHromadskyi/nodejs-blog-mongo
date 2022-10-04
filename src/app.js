@@ -1,5 +1,6 @@
 require('dotenv').config();
 
+const chalk = require('chalk');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const express = require('express');
@@ -54,7 +55,7 @@ async function startApp() {
         await connection.connectDb();
 
         app.listen(variables.PORT, () => {
-            console.log(`App listen port: ${variables.PORT}`);
+            console.log(chalk.greenBright(`App listen port: ${variables.PORT}`));
         });
     } catch (e) {
         console.log(e);

@@ -1,6 +1,12 @@
 const {
-    fieldsName: { ACCESS_TOKEN, REFRESH_TOKEN },
-    messagesKeywords: { MISSED_TOKEN, INVALID_TOKEN },
+    fieldsName: {
+        ACCESS_TOKEN,
+        REFRESH_TOKEN,
+    },
+    messagesKeywords: {
+        MISSED_TOKEN,
+        INVALID_TOKEN,
+    },
     tokenTypes: { ACCESS },
     statusCodes: { UNAUTHORIZED },
 } = require('../config');

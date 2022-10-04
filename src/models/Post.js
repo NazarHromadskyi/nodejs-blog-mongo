@@ -59,7 +59,6 @@ postSchema.pre('find', function () {
 
 postSchema.pre('findOne', function () {
     this.populate('user', '-posts -password -__v -comments');
-    this.populate('comments', '-__v -user -post');
 });
 
 module.exports = model(POST, postSchema);
