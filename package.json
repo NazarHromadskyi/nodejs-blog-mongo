@@ -5,6 +5,7 @@
   "main": "src/app.js",
   "type": "commonjs",
   "scripts": {
+    "start": "node src/app.js",
     "lint": "eslint --cache --ext .js,.ts src",
     "lint:fix": "npm run lint -- --fix",
     "dev": "nodemon src/app.js"
