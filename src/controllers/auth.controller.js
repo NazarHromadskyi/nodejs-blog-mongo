@@ -21,11 +21,10 @@ const {
 const { objectNormalizer } = require('../utils');
 
 const cookieOptions = {
-    domain: 'https://react-blog-three-tau.vercel.app/',
     httpOnly: true,
     sameSite: 'none',
     maxAge: 24 * 60 * 60 * 1000, // 24 hours todo const
-    secure: true,
+    // secure: true,
 };
 
 module.exports = {
